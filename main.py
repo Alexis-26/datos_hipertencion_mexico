@@ -1,9 +1,8 @@
 import pandas as pd
 from pymongo import MongoClient
 from flask import Flask, request, jsonify
-import process_data.extraction as ex
-import process_data.transform as tr
-from pymongo import MongoClient
+from bson.decimal128 import Decimal128 # Importa Decimal128
+import json # Importa json
 
 # Nombre de la base de datos: hipertencio_mexico
 
@@ -32,10 +31,6 @@ def consulta_db(columnas):
     # Selecciona la coleccion (tabla)
     collection = db["registro"]
 
-    # Revisar las columnas de la coleccion
-    # columnas = collection.find_one()
-    # print(columnas)
-
     # Estructura la proyeccion
     proyeccion = estructura_proyeccion(columnas)
 
@@ -43,10 +38,12 @@ def consulta_db(columnas):
     resultados = list(collection.find({}, proyeccion))
 
     return resultados
-    # Mostrar los resultados
-    # for resultado in resultados:
-    #     print(resultado)
-    
+
+# Función para serializar Decimal128 a string
+def decimal_default(obj):
+    if isinstance(obj, Decimal128):
+        return str(obj)
+    raise TypeError(repr(obj) + " is not JSON serializable")
 
 app = Flask(__name__)
 
@@ -56,11 +53,12 @@ def consulta():
         columnas = request.args.get('columnas')
         columnas = columnas.split(",") if columnas else []
         resultados = consulta_db(columnas)
-        return jsonify(resultados)
+        # Serializa los resultados a JSON usando la función decimal_default
+        json_resultados = json.dumps(resultados, default=decimal_default)
+        return json_resultados, 200, {'Content-Type': 'application/json'} # Asegura el tipo de contenido
     
     except Exception as e:
         return jsonify({"error": str(e)})
-    
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000, debug=True)
