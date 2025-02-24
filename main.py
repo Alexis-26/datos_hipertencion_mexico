@@ -55,12 +55,12 @@ def consulta():
     try:
         columnas = request.args.get('columnas')
         columnas = columnas.split(",") if columnas else []
-        #resultados = consulta_db(columnas)
-        return jsonify({"resultados": "hola mundo"})
+        resultados = consulta_db(columnas)
+        return jsonify(resultados)
     
     except Exception as e:
         return jsonify({"error": str(e)})
     
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host="0.0.0.0", port=5000, debug=True)
