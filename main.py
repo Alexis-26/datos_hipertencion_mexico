@@ -55,8 +55,8 @@ def consulta():
     try:
         columnas = request.args.get('columnas')
         columnas = columnas.split(",") if columnas else []
-        resultados = consulta_db(columnas)
-        return jsonify(resultados)
+        #resultados = consulta_db(columnas)
+        return jsonify({"resultados": "hola mundo"})
     
     except Exception as e:
         return jsonify({"error": str(e)})
