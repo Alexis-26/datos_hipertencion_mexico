@@ -9,8 +9,7 @@ from pymongo import MongoClient
 
 # Realiza la conexion al cluster de MongoDB
 def configuracion():
-    URI = 'mongodb+srv://alexis:Chokart$2978@cluster0.dx3fa.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
-    MONGODB_URI = URI
+    MONGODB_URI = 'mongodb+srv://alexis:Chokart$2978@cluster0.dx3fa.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
     client = MongoClient(MONGODB_URI)
     return client
 
