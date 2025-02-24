@@ -3,14 +3,14 @@ from pymongo import MongoClient
 from flask import Flask, request, jsonify
 import process_data.extraction as ex
 import process_data.transform as tr
-from flask import Flask, request, jsonify
 from pymongo import MongoClient
 
 # Nombre de la base de datos: hipertencio_mexico
 
 # Realiza la conexion al cluster de MongoDB
 def configuracion():
-    MONGODB_URI = 'mongodb+srv://alexis:Chokart$2978@cluster0.dx3fa.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
+    URI = 'mongodb+srv://alexis:Chokart$2978@cluster0.dx3fa.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
+    MONGODB_URI = URI
     client = MongoClient(MONGODB_URI)
     return client
 
@@ -64,4 +64,4 @@ def consulta():
     
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
